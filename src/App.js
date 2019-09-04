@@ -29,14 +29,18 @@ class App extends Component{
     socket.on('joinRoomSuccess',(msg)=>{
       console.log('Room' + msg + 'exists and joined');
     });
+
+    socket.on('joinRoomFailed',()=>{
+      console.log('Room does not exisst.')
+    })
   }
 
   handleCreateRoom(event) {
     socket.emit('createRoom');
   };
 
-  joinRoom(event){
-    socket.emit('joinRoom','abcdroom');
+  joinRoom(roomName){
+    socket.emit('joinRoom',roomName);
   };
 
 
