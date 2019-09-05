@@ -18,14 +18,14 @@ class ChoiceScreen extends React.Component{
     handleJoinRoom = (e) =>{
         const isValid = this.validateJoinRoom();
         if(isValid){
-            this.props.handleJoinRoom(this.state.roomName);
+            this.props.handleJoinRoom(this.state.roomName,this.state.displayName);
         }
     }
 
     handleCreateRoom = (e) =>{
         const isValid = this.validateCreateRoom();
         if(isValid){
-            this.props.handleCreateRoom();
+            this.props.handleCreateRoom(this.state.displayName);
         } 
     }
 
@@ -46,16 +46,13 @@ class ChoiceScreen extends React.Component{
             <br/>
             <button type='button'onClick={this.handleJoinRoom}>Join Room</button>
             <input type="text" name="roomCode" onChange={this.handleRoomNameUpdate}/>
-            <Link to='/create' onClick={this.handleCreateRoom}>Create Room</Link>
+            <button onClick={this.handleCreateRoom}>Create Room</button>
             </div>
         )
-
-        
 
         return(
             <div>
             {selectionComponent}
-
             </div>
         )
     };

@@ -5,6 +5,7 @@ import socketIOClient from "socket.io-client";
 import SocketContext from './socket-context'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ChoiceScreen from './ChoiceScreen';
+import Room from './Room'
 const socket = socketIOClient('localhost:5000');
 
 
@@ -23,12 +24,12 @@ class App extends Component{
 
     socket.on('roomCreated',(msg)=>{
       console.log('room has been created' + msg);
-      this.setState({roomCode:msg});
+      this.setState({roomJoined:true,roomCode:msg,isAdmin:true});
     });
 
     socket.on('joinRoomSuccess',(msg)=>{
       console.log('Room' + msg + 'exists and joined');
-      this.setState({roomJoined:true});
+      this.setState({roomJoined:true,roomCode:msg});
     });
 
     socket.on('joinRoomFailed',()=>{
@@ -36,12 +37,12 @@ class App extends Component{
     })
   }
 
-  handleCreateRoom(event) {
-    socket.emit('createRoom');
+  handleCreateRoom(adminName) {
+    socket.emit('createRoom',adminName);
   };
 
-  joinRoom(roomName){
-    socket.emit('joinRoom',roomName);
+  joinRoom(roomName,participantName){
+    socket.emit('joinRoom',roomName,participantName);
   };
 
 
@@ -51,7 +52,7 @@ class App extends Component{
       <Route path="/create" component={About} /></div>);
 
 const waitingScreen = (
-  <div><h2>WAITING FOR ACCESS</h2></div>
+  <Room adminMode={this.state.isAdmin} roomCode={this.state.roomCode}/>
 )
 
     return (
