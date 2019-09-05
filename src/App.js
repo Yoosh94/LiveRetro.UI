@@ -28,6 +28,7 @@ class App extends Component{
 
     socket.on('joinRoomSuccess',(msg)=>{
       console.log('Room' + msg + 'exists and joined');
+      this.setState({roomJoined:true});
     });
 
     socket.on('joinRoomFailed',()=>{
@@ -45,12 +46,18 @@ class App extends Component{
 
 
   render(){
+    const choiceScreen = (<div>{this.state.roomCode ? <h2>Retro TIME</h2>:
+      <ChoiceScreen handleCreateRoom={this.handleCreateRoom} handleJoinRoom={this.joinRoom}/>}
+      <Route path="/create" component={About} /></div>);
+
+const waitingScreen = (
+  <div><h2>WAITING FOR ACCESS</h2></div>
+)
+
     return (
       <Router>
       <div className="App">
-        {this.state.roomCode ? <h2>Retro TIME</h2>:
-        <ChoiceScreen handleCreateRoom={this.handleCreateRoom} handleJoinRoom={this.joinRoom}/>}
-        <Route path="/create" component={About} />
+        {this.state.roomJoined ? waitingScreen: choiceScreen}
       </div>
       </Router>
     );
