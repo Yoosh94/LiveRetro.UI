@@ -17,6 +17,10 @@ class App extends Component{
   constructor() {
     super();
     this.state = {
+      roomJoined:false,
+      roomCode:'',
+      isAdmin:false,
+      notes:[]
     };
   }
 
@@ -34,7 +38,13 @@ class App extends Component{
 
     socket.on('joinRoomFailed',()=>{
       console.log('Room does not exisst.')
-    })
+    });
+
+    // socket.on('noteUpdated',notes=>{
+    //   this.setState({
+    //       notes:notes
+    //   });
+    // });
   }
 
   handleCreateRoom(adminName) {
@@ -45,20 +55,24 @@ class App extends Component{
     socket.emit('joinRoom',roomName,participantName);
   };
 
+  handleNewNote(roomCode,note){
+    console.log("new note")
+    socket.emit("addNote",roomCode,note)
+  }
 
   render(){
     const choiceScreen = (<div>{this.state.roomCode ? <h2>Retro TIME</h2>:
       <ChoiceScreen handleCreateRoom={this.handleCreateRoom} handleJoinRoom={this.joinRoom}/>}
       <Route path="/create" component={About} /></div>);
 
-const waitingScreen = (
-  <Room adminMode={this.state.isAdmin} roomCode={this.state.roomCode}/>
+const room = (
+  <Room adminMode={this.state.isAdmin} roomCode={this.state.roomCode} notes={this.state.notes} handleNewNote={this.handleNewNote}/>
 )
 
     return (
       <Router>
       <div className="App">
-        {this.state.roomJoined ? waitingScreen: choiceScreen}
+        {this.state.roomJoined ? room: choiceScreen}
       </div>
       </Router>
     );
