@@ -25,7 +25,7 @@ class Room extends React.Component{
     onDrop = (event) =>{
         let id = event.dataTransfer.getData("id");
         this.props.handleNewNote(this.props.roomCode,{
-            noteId:id,
+            id:id,
             positionX : event.screenX,
             positionY: event.screenY
         });
