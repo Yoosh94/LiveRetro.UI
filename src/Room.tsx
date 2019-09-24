@@ -51,8 +51,6 @@ class Room extends React.Component<RoomProps,RoomState>{
                     {this.state.notes.map(note=> 
                     <StickyNote key={note.id} 
                     id={note.id}
-                    // positionX={note.positionX}
-                    // positionY={note.positionY}
                      />
                      )}
                 </div>

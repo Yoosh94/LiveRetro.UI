@@ -3,6 +3,8 @@ import { AppState, AppProps, Note } from './types/app';
 import Room from './Room';
 import ChoiceScreen from './ChoiceScreen';
 import socketClient from 'socket.io-client'
+import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
+
 const socket = socketClient('localhost:5000');
 
 
@@ -59,13 +61,19 @@ class App extends React.Component<AppProps,AppState> {
       <ChoiceScreen handleCreateRoom={this.handleCreateRoom} handleJoinRoom={this.joinRoom}/>}</div>);
       
     const room = (
-      <Room roomCode={this.state.roomCode} notes={this.state.notes} handleNewNote={this.handleNewNote}/>
+      <Redirect to={`/room/${this.state.roomCode}/`}/>
     )
 
+
+
     return(
+      <Router>
       <div className="App">
         {this.state.roomJoined ? room: choiceScreen}
       </div>
+      <Route path={`/room/${this.state.roomCode}/`} render={() => <Room roomCode={this.state.roomCode} notes={this.state.notes} handleNewNote={this.handleNewNote}/>}/>
+      </Router>
+      
       )
   };
 }
