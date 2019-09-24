@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, { Component, ReactNode } from 'react';
 import './App.css';
 import socketIOClient from "socket.io-client";
-import SocketContext from './socket-context'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ChoiceScreen from './ChoiceScreen';
 import Room from './Room'
+import { AppState } from './types/app';
 const socket = socketIOClient('localhost:5000');
 
 
@@ -13,15 +12,19 @@ function About() {
   return <h2>About</h2>;
 }
 
-class App extends Component{
-  constructor() {
-    super();
+class App extends React.Component<{},AppState>{
+  constructor(props) {
+    super(props);
     this.state = {
       roomJoined:false,
       roomCode:'',
       isAdmin:false,
       notes:[]
     };
+
+    this.handleCreateRoom = this.handleCreateRoom.bind(this);
+    this.joinRoom = this.joinRoom.bind(this);
+    this.handleNewNote = this.handleNewNote.bind(this);
   }
 
   componentDidMount(){
@@ -60,10 +63,10 @@ class App extends Component{
     socket.emit("addNote",roomCode,note)
   }
 
-  render(){
-    const choiceScreen = (<div>{this.state.roomCode ? <h2>Retro TIME</h2>:
-      <ChoiceScreen handleCreateRoom={this.handleCreateRoom} handleJoinRoom={this.joinRoom}/>}
-      <Route path="/create" component={About} /></div>);
+  render = ():ReactNode => {
+
+    const choiceScreen :ReactNode = (<div>{this.state.roomCode ? <h2>Retro TIME</h2>:
+    <ChoiceScreen handleCreateRoom={this.handleCreateRoom} handleJoinRoom={this.joinRoom}/>}</div>);
 
 const room = (
   <Room adminMode={this.state.isAdmin} roomCode={this.state.roomCode} notes={this.state.notes} handleNewNote={this.handleNewNote}/>
