@@ -3,8 +3,8 @@ import { AppState, AppProps, Note } from './types/app';
 import Room from './Room';
 import ChoiceScreen from './ChoiceScreen';
 import socketClient from 'socket.io-client'
-const socket = socketClient('localhost:5000');
-
+import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
+let socket : SocketIOClient.Socket;
 
 class App extends React.Component<AppProps,AppState> {
   constructor(props : AppProps) {
@@ -15,6 +15,8 @@ class App extends React.Component<AppProps,AppState> {
       roomCode:'',
       notes: []
     }
+    socket = socketClient(`localhost:5000/${this.state.roomCode}`);
+
   }
 
   componentDidMount(){
@@ -33,6 +35,10 @@ class App extends React.Component<AppProps,AppState> {
       console.log('Room does not exisst.')
     });
 
+    socket.on("joinroom2",(msg:string) => {
+      console.log(msg);
+    })
+
     // socket.on('noteUpdated',notes=>{
     //   this.setState({
     //       notes:notes
@@ -42,6 +48,7 @@ class App extends React.Component<AppProps,AppState> {
 
   handleCreateRoom = (adminName:string) => {
     socket.emit('createRoom',adminName);
+    
   };
 
   joinRoom = (roomName:string,participantName:string)=>{
@@ -59,13 +66,19 @@ class App extends React.Component<AppProps,AppState> {
       <ChoiceScreen handleCreateRoom={this.handleCreateRoom} handleJoinRoom={this.joinRoom}/>}</div>);
       
     const room = (
-      <Room roomCode={this.state.roomCode} notes={this.state.notes} handleNewNote={this.handleNewNote}/>
+      <Redirect to={`/room/${this.state.roomCode}/`}/>
     )
 
+
+
     return(
+      <Router>
       <div className="App">
         {this.state.roomJoined ? room: choiceScreen}
       </div>
+      <Route path={`/room/${this.state.roomCode}/`} render={() => <Room roomCode={this.state.roomCode} notes={this.state.notes} handleNewNote={this.handleNewNote}/>}/>
+      </Router>
+      
       )
   };
 }

@@ -3,7 +3,6 @@ import { RoomProps, RoomState } from './types/room';
 // import Note from './Note';
 import {Note} from './types/app'
 import StickyNote from './StickyNote';
-
 class Room extends React.Component<RoomProps,RoomState>{
     constructor(props : RoomProps){
         super(props);
@@ -11,7 +10,6 @@ class Room extends React.Component<RoomProps,RoomState>{
             notes: []
         };
     }
-
 
     CreateNote = () =>{
         // let newNote = <Note key={this.state.notes.length}
@@ -51,8 +49,6 @@ class Room extends React.Component<RoomProps,RoomState>{
                     {this.state.notes.map(note=> 
                     <StickyNote key={note.id} 
                     id={note.id}
-                    // positionX={note.positionX}
-                    // positionY={note.positionY}
                      />
                      )}
                 </div>
