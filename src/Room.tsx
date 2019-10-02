@@ -3,11 +3,9 @@ import { RoomProps, RoomState } from './types/room';
 // import Note from './Note';
 import {Note} from './types/app'
 import StickyNote from './StickyNote';
-let socket : SocketIOClient.Socket;
 class Room extends React.Component<RoomProps,RoomState>{
     constructor(props : RoomProps){
         super(props);
-        // socket = Connect(props.roomCode);
         this.state = {
             notes: []
         };
