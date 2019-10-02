@@ -4,9 +4,7 @@ import Room from './Room';
 import ChoiceScreen from './ChoiceScreen';
 import socketClient from 'socket.io-client'
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
-
-const socket = socketClient('localhost:5000');
-
+let socket : SocketIOClient.Socket;
 
 class App extends React.Component<AppProps,AppState> {
   constructor(props : AppProps) {
@@ -17,6 +15,8 @@ class App extends React.Component<AppProps,AppState> {
       roomCode:'',
       notes: []
     }
+    socket = socketClient(`localhost:5000/${this.state.roomCode}`);
+
   }
 
   componentDidMount(){
@@ -35,6 +35,10 @@ class App extends React.Component<AppProps,AppState> {
       console.log('Room does not exisst.')
     });
 
+    socket.on("joinroom2",(msg:string) => {
+      console.log(msg);
+    })
+
     // socket.on('noteUpdated',notes=>{
     //   this.setState({
     //       notes:notes
@@ -44,6 +48,7 @@ class App extends React.Component<AppProps,AppState> {
 
   handleCreateRoom = (adminName:string) => {
     socket.emit('createRoom',adminName);
+    
   };
 
   joinRoom = (roomName:string,participantName:string)=>{
