@@ -49,7 +49,12 @@ class Room extends React.Component<RoomProps,RoomState>{
                 <button onClick={this.CreateNote}>+</button>
                 <div>
                     {this.state.notes.map(note=> 
-                    <StickyNote key={note.id} 
+                    <StickyNote key={`${note.id}${note.author}`} 
+                    id={note.id}
+                     />
+                     )}
+                     {this.props.notes.map(note=> 
+                    <StickyNote key={`${note.id}${note.author}`} 
                     id={note.id}
                      />
                      )}

@@ -37,6 +37,7 @@ class App extends React.Component<AppProps,AppState> {
     });
 
     socket.on('noteUpdated',(notes:Note[])=>{
+      console.log("here are all the notes" + notes);
       this.setState({
           notes:notes
       });
