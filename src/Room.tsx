@@ -15,6 +15,7 @@ class Room extends React.Component<RoomProps,RoomState>{
         // let newNote = <Note key={this.state.notes.length}
         //  id={this.state.notes.length}} />
         let newNote : Note = {
+            author: this.props.participant,
             positionX : 0,
             positionY : 0,
             id : this.state.notes.length
@@ -36,7 +37,8 @@ class Room extends React.Component<RoomProps,RoomState>{
         this.props.handleNewNote(this.props.roomCode,{
             id:Number(id),
             positionX : event.screenX,
-            positionY: event.screenY
+            positionY: event.screenY,
+            author: this.props.participant
         });
     }
 
