@@ -13,7 +13,8 @@ class App extends React.Component<AppProps,AppState> {
       roomJoined:false,
       isAdmin:false,
       roomCode:'',
-      notes: []
+      notes: [],
+      participant:''
     }
     socket = socketClient(`localhost:5000/${this.state.roomCode}`);
 
@@ -35,24 +36,22 @@ class App extends React.Component<AppProps,AppState> {
       console.log('Room does not exisst.')
     });
 
-    socket.on("joinroom2",(msg:string) => {
-      console.log(msg);
-    })
-
-    // socket.on('noteUpdated',notes=>{
-    //   this.setState({
-    //       notes:notes
-    //   });
-    // });
+    socket.on('noteUpdated',(notes:Note[])=>{
+      this.setState({
+          notes:notes
+      });
+    });
   }
 
   handleCreateRoom = (adminName:string) => {
     socket.emit('createRoom',adminName);
+    this.setState({participant:adminName});
     
   };
 
   joinRoom = (roomName:string,participantName:string)=>{
     socket.emit('joinRoom',roomName,participantName);
+    this.setState({participant:participantName});
   };
 
   handleNewNote(roomCode:string,note:Note){
@@ -76,7 +75,7 @@ class App extends React.Component<AppProps,AppState> {
       <div className="App">
         {this.state.roomJoined ? room: choiceScreen}
       </div>
-      <Route path={`/room/${this.state.roomCode}/`} render={() => <Room roomCode={this.state.roomCode} notes={this.state.notes} handleNewNote={this.handleNewNote}/>}/>
+      <Route path={`/room/${this.state.roomCode}/`} render={() => <Room roomCode={this.state.roomCode} notes={this.state.notes} participant={this.state.participant} handleNewNote={this.handleNewNote}/>}/>
       </Router>
       
       )
