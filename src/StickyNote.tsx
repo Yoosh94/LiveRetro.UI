@@ -20,7 +20,6 @@ class StickyNote extends React.Component<StickyNoteProps,StickyNoteState>{
                 <div style={{width:'100px',height:'100px',background:'#f00',left:this.state.screenX}}
                  draggable
                  onDragStart={(e) => this.onDragStart(e,this.props.id)}>
-
             </div>
         )
     }

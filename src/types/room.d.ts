@@ -2,7 +2,8 @@ import { Note } from "./app"
 
 export type RoomProps = {
     roomCode: string,
-    handleNewNote(roomCode:string,note:Note)
+    handleNewNote(roomCode:string,note:Note),
+    createNote(),
     notes : Note[],
     participant:string
 };

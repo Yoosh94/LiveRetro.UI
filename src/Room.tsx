@@ -11,23 +11,6 @@ class Room extends React.Component<RoomProps,RoomState>{
         };
     }
 
-    CreateNote = () =>{
-        // let newNote = <Note key={this.state.notes.length}
-        //  id={this.state.notes.length}} />
-        let newNote : Note = {
-            author: this.props.participant,
-            positionX : 0,
-            positionY : 0,
-            id : this.state.notes.length
-        };
-        var notes = this.state.notes.concat(newNote);
-
-        this.setState({
-            notes : notes
-        });
-    };
-
-
     onDragOver = (e: React.DragEvent<HTMLDivElement>) =>{
         e.preventDefault();
     }
@@ -46,13 +29,8 @@ class Room extends React.Component<RoomProps,RoomState>{
         return(
             <div onDragOver={e=>this.onDragOver(e)} onDrop={e=> this.onDrop(e)}>
                 <h3>Room Code : {this.props.roomCode}</h3>
-                <button onClick={this.CreateNote}>+</button>
+                <button onClick={this.props.createNote}>+</button>
                 <div>
-                    {this.state.notes.map(note=> 
-                    <StickyNote key={`${note.id}${note.author}`} 
-                    id={note.id}
-                     />
-                     )}
                      {this.props.notes.map(note=> 
                     <StickyNote key={`${note.id}${note.author}`} 
                     id={note.id}
