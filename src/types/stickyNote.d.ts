@@ -1,5 +1,6 @@
 export type StickyNoteProps = {
-    id:number
+    id:number,
+    author:string
 };
 
 export type StickyNoteState = {

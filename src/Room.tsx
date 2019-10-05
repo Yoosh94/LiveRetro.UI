@@ -17,11 +17,12 @@ class Room extends React.Component<RoomProps,RoomState>{
 
     onDrop = (event : React.DragEvent<HTMLDivElement>) =>{
         let id = event.dataTransfer.getData("id");
+        let author = event.dataTransfer.getData("author");
         this.props.handleNewNote(this.props.roomCode,{
             id:Number(id),
             positionX : event.screenX,
             positionY: event.screenY,
-            author: this.props.participant
+            author: author
         });
     }
 
@@ -30,10 +31,11 @@ class Room extends React.Component<RoomProps,RoomState>{
             <div onDragOver={e=>this.onDragOver(e)} onDrop={e=> this.onDrop(e)}>
                 <h3>Room Code : {this.props.roomCode}</h3>
                 <button onClick={this.props.createNote}>+</button>
-                <div>
+                <div style={{position:'absolute'}}>
                      {this.props.notes.map(note=> 
                     <StickyNote key={`${note.id}${note.author}`} 
                     id={note.id}
+                    author={note.author}
                      />
                      )}
                 </div>

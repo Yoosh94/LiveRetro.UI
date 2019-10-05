@@ -13,6 +13,7 @@ class StickyNote extends React.Component<StickyNoteProps,StickyNoteState>{
     onDragStart = (event:React.DragEvent<HTMLDivElement>,id:number) =>{
         console.log("dragId" + id);
         event.dataTransfer.setData("id",String(id));
+        event.dataTransfer.setData("author",this.props.author);
     }
 
     render(){

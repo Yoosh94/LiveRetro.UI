@@ -89,8 +89,8 @@ class App extends React.Component<AppProps,AppState> {
       <Router>
       <div className="App">
         {this.state.roomJoined ? room: choiceScreen}
+        <Route path={`/room/${this.state.roomCode}/`} render={() => <Room roomCode={this.state.roomCode} notes={this.state.notes} participant={this.state.participant} handleNewNote={this.handleNewNote} createNote={this.createNote}/>}/>
       </div>
-      <Route path={`/room/${this.state.roomCode}/`} render={() => <Room roomCode={this.state.roomCode} notes={this.state.notes} participant={this.state.participant} handleNewNote={this.handleNewNote} createNote={this.createNote}/>}/>
       </Router>
       
       )
