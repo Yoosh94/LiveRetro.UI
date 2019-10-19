@@ -1,9 +1,9 @@
 export type StickyNoteProps = {
     id:number,
-    // author:string,
+    author:string,
     screenX:number,
     screenY:number,
-    onDrag(event:React.DragEvent<HTMLDivElement>,id:number)
+    onDrag(event:React.DragEvent<HTMLDivElement>,id:number,author:string)
 };
 
 export type StickyNoteState = {
