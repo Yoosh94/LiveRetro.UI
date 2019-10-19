@@ -11,6 +11,8 @@ class Room extends React.Component<RoomProps, RoomState> {
       const { roomCode, handleNoteDropped } = this.props;
       const id = event.dataTransfer.getData('id');
       const author = event.dataTransfer.getData('author');
+      console.log(event.screenX);
+      console.log(event.screenY);
       handleNoteDropped(roomCode, {
         author,
         id: Number(id),
@@ -23,6 +25,12 @@ class Room extends React.Component<RoomProps, RoomState> {
       const { participant } = this.props;
       event.dataTransfer.setData('id', String(id));
       event.dataTransfer.setData('author', participant);
+    }
+
+    calculateYPosition = (screenY:number):number => {
+      let yCoord = screenY - 100;
+      if(yCoord < 0 ) return 0;
+      return yCoord;
     }
 
     public render() {
@@ -40,7 +48,7 @@ Room Code :
                 key={`${note.id}${note.author}`}
                 id={note.id}
                 screenX={note.positionX}
-                screenY={note.positionY}
+                screenY={this.calculateYPosition(note.positionY)}
                 onDrag={this.onDragStart}
               />
             ))}
