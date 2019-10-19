@@ -4,6 +4,7 @@ import Room from './Room';
 import ChoiceScreen from './ChoiceScreen';
 import socketClient from 'socket.io-client'
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
+import StickyNote from './StickyNote';
 let socket : SocketIOClient.Socket;
 
 class App extends React.Component<AppProps,AppState> {
@@ -37,7 +38,6 @@ class App extends React.Component<AppProps,AppState> {
     });
 
     socket.on('noteUpdated',(notes:Note[])=>{
-      console.log("here are all the notes" + notes);
       this.setState({
           notes:notes
       });
@@ -55,9 +55,18 @@ class App extends React.Component<AppProps,AppState> {
     this.setState({participant:participantName});
   };
 
-  handleNewNote(roomCode:string,note:Note){
+  handleNoteDropped = (roomCode:string,note:Note)=>{
     console.log("new note")
-    socket.emit("addNote",roomCode,note)
+    socket.emit("addNote",roomCode,note);
+
+    var previousNoteState =  this.state.notes;
+
+    var theSameNote = previousNoteState.filter(stateNote => stateNote.author === note.author && stateNote.id === note.id)[0];
+    var allTheOtherNotes = previousNoteState.filter(stateNote => stateNote.author !== note.author || stateNote.id !== note.id)
+    var newNoteWithLocation = {...theSameNote,...note};
+    this.setState({
+        notes : allTheOtherNotes.concat(newNoteWithLocation)
+    });
   }
 
   createNote = () => {
@@ -83,13 +92,13 @@ class App extends React.Component<AppProps,AppState> {
       <Redirect to={`/room/${this.state.roomCode}/`}/>
     )
 
-
-
     return(
       <Router>
       <div className="App">
         {this.state.roomJoined ? room: choiceScreen}
-        <Route path={`/room/${this.state.roomCode}/`} render={() => <Room roomCode={this.state.roomCode} notes={this.state.notes} participant={this.state.participant} handleNewNote={this.handleNewNote} createNote={this.createNote}/>}/>
+        <Route path={`/room/${this.state.roomCode}/`} render={() =>
+         <Room roomCode={this.state.roomCode} notes={this.state.notes} participant={this.state.participant} handleNoteDropped={this.handleNoteDropped} createNote={this.createNote}/>}
+        />
       </div>
       </Router>
       
