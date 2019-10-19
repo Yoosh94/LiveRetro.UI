@@ -21,10 +21,10 @@ class Room extends React.Component<RoomProps, RoomState> {
       });
     }
 
-    public onDragStart = (event: React.DragEvent<HTMLDivElement>, id: number) => {
+    public onDragStart = (event: React.DragEvent<HTMLDivElement>, id: number,author:string) => {
       const { participant } = this.props;
       event.dataTransfer.setData('id', String(id));
-      event.dataTransfer.setData('author', participant);
+      event.dataTransfer.setData('author', author);
     }
 
     calculateYPosition = (screenY:number):number => {
@@ -46,6 +46,7 @@ Room Code :
             {notes.map((note) => (
               <StickyNote
                 key={`${note.id}${note.author}`}
+                author={note.author}
                 id={note.id}
                 screenX={note.positionX}
                 screenY={this.calculateYPosition(note.positionY)}
