@@ -3,10 +3,10 @@ import { StickyNoteProps } from './types/stickyNote';
 
 const StickyNote = ({
   id, screenX, screenY, onDrag,
-}:StickyNoteProps) => (
+}: StickyNoteProps) => (
   <div
     style={{
-      width: '100px', height: '100px', background: '#f00', left: screenX, top: screenY, position: 'absolute',
+      background: '#f00', height: '100px', left: screenX, position: 'absolute', top: screenY, width: '100px',
     }}
     draggable
     onDragStart={(e) => onDrag(e, id)}

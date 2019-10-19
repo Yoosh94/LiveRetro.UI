@@ -1,34 +1,34 @@
 import React, { ReactNode } from 'react';
-import socketClient from 'socket.io-client';
 import {
-  BrowserRouter as Router, Route, Link, Redirect,
+  BrowserRouter as Router, Link, Redirect, Route,
 } from 'react-router-dom';
-import { AppState, AppProps, Note } from './types/app';
-import Room from './Room';
+import socketClient from 'socket.io-client';
 import ChoiceScreen from './ChoiceScreen';
+import Room from './Room';
+import { AppProps, AppState, Note } from './types/app';
 
-let socket : SocketIOClient.Socket;
+let socket: SocketIOClient.Socket;
 
 class App extends React.Component<AppProps, AppState> {
-  constructor(props : AppProps) {
+  constructor(props: AppProps) {
     super(props);
     this.state = {
-      roomJoined: false,
       isAdmin: false,
-      roomCode: '',
       notes: [],
       participant: '',
+      roomCode: '',
+      roomJoined: false,
     };
     socket = socketClient(`localhost:5000/${this.state.roomCode}`);
   }
 
-  componentDidMount() {
-    socket.on('roomCreated', (roomCode:string) => {
+  public componentDidMount() {
+    socket.on('roomCreated', (roomCode: string) => {
       console.log(`room has been created${roomCode}`);
       this.setState({ roomJoined: true, roomCode, isAdmin: true });
     });
 
-    socket.on('joinRoomSuccess', (roomCode:string) => {
+    socket.on('joinRoomSuccess', (roomCode: string) => {
       console.log(`Room${roomCode}exists and joined`);
       this.setState({ roomJoined: true, roomCode });
     });
@@ -37,24 +37,24 @@ class App extends React.Component<AppProps, AppState> {
       console.log('Room does not exisst.');
     });
 
-    socket.on('noteUpdated', (notes:Note[]) => {
+    socket.on('noteUpdated', (notes: Note[]) => {
       this.setState({
         notes,
       });
     });
   }
 
-  handleCreateRoom = (adminName:string) => {
+  public handleCreateRoom = (adminName: string) => {
     socket.emit('createRoom', adminName);
     this.setState({ participant: adminName });
-  };
+  }
 
-  joinRoom = (roomName:string, participantName:string) => {
+  public joinRoom = (roomName: string, participantName: string) => {
     socket.emit('joinRoom', roomName, participantName);
     this.setState({ participant: participantName });
-  };
+  }
 
-  handleNoteDropped = (roomCode:string, note:Note) => {
+  public handleNoteDropped = (roomCode: string, note: Note) => {
     console.log('new note');
     socket.emit('addNote', roomCode, note);
 
@@ -68,22 +68,22 @@ class App extends React.Component<AppProps, AppState> {
     });
   }
 
-  createNote = () => {
-    const newNote : Note = {
+  public createNote = () => {
+    const newNote: Note = {
       author: this.state.participant,
+      id: this.state.notes.length,
       positionX: 0,
       positionY: 0,
-      id: this.state.notes.length,
     };
     const notes = this.state.notes.concat(newNote);
 
     this.setState({
       notes,
     });
-  };
+  }
 
-  render() {
-    const choiceScreen :ReactNode = (
+  public render() {
+    const choiceScreen: ReactNode = (
       <div>
         {this.state.roomCode ? <h2>Retro TIME</h2>
           : <ChoiceScreen handleCreateRoom={this.handleCreateRoom} handleJoinRoom={this.joinRoom} />}
@@ -100,7 +100,15 @@ class App extends React.Component<AppProps, AppState> {
           {this.state.roomJoined ? room : choiceScreen}
           <Route
             path={`/room/${this.state.roomCode}/`}
-            render={() => <Room roomCode={this.state.roomCode} notes={this.state.notes} participant={this.state.participant} handleNoteDropped={this.handleNoteDropped} createNote={this.createNote} />}
+            render={() => (
+              <Room
+                roomCode={this.state.roomCode}
+                notes={this.state.notes}
+                participant={this.state.participant}
+                handleNoteDropped={this.handleNoteDropped}
+                createNote={this.createNote}
+              />
+            )}
           />
         </div>
       </Router>

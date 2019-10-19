@@ -2,7 +2,7 @@ import React from 'react';
 import { ChoiceRoomProps, ChoiceRoomState } from './types/choiceRoom';
 
 class ChoiceScreen extends React.Component<ChoiceRoomProps, ChoiceRoomState> {
-  constructor(props : ChoiceRoomProps) {
+  constructor(props: ChoiceRoomProps) {
     super(props);
     this.state = {
       displayName: '',
@@ -10,33 +10,33 @@ class ChoiceScreen extends React.Component<ChoiceRoomProps, ChoiceRoomState> {
     };
   }
 
-    handleRoomNameUpdate = (event:React.ChangeEvent<HTMLInputElement>) => {
+    public handleRoomNameUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
       this.setState({ roomName: event.target.value });
     }
 
-    handleDisplayNameUpdate = (event:React.ChangeEvent<HTMLInputElement>) => {
+    public handleDisplayNameUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
       this.setState({ displayName: event.target.value });
     }
 
-    handleJoinRoom = (e:React.MouseEvent<HTMLButtonElement>) => {
+    public handleJoinRoom = (e: React.MouseEvent<HTMLButtonElement>) => {
       const isValid = this.validateJoinRoom();
       if (isValid) {
         this.props.handleJoinRoom(this.state.roomName, this.state.displayName);
       }
     }
 
-    handleCreateRoom = (e:React.MouseEvent<HTMLButtonElement>) => {
+    public handleCreateRoom = (e: React.MouseEvent<HTMLButtonElement>) => {
       const isValid = this.validateCreateRoom();
       if (isValid) {
         this.props.handleCreateRoom(this.state.displayName);
       }
     }
 
-    validateJoinRoom =() => this.state.displayName.length > 0 && this.state.roomName.length > 0
+    public validateJoinRoom = () => this.state.displayName.length > 0 && this.state.roomName.length > 0;
 
-    validateCreateRoom =() => this.state.displayName.length > 0
+    public validateCreateRoom = () => this.state.displayName.length > 0;
 
-    render() {
+    public render() {
       const selectionComponent = (
         <div>
           <label>
