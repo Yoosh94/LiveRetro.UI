@@ -42,12 +42,6 @@ class App extends React.Component<{},AppState>{
     socket.on('joinRoomFailed',()=>{
       console.log('Room does not exisst.')
     });
-
-    // socket.on('noteUpdated',notes=>{
-    //   this.setState({
-    //       notes:notes
-    //   });
-    // });
   }
 
   handleCreateRoom(adminName) {
