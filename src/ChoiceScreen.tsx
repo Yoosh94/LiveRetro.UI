@@ -13,20 +13,27 @@ class ChoiceScreen extends React.Component<ChoiceRoomProps, ChoiceRoomState> {
   }
 
   handleRoomNameUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (
+      this.state.borderColorRoomName === '2px solid red' &&
+      event.target.value.length > 0
+    ) {
+      this.setState({ borderColorRoomName: '' });
+    }
     this.setState({ roomName: event.target.value });
   };
 
   handleDisplayNameUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (
+      this.state.borderColorDisplayName === '2px solid red' &&
+      event.target.value.length > 0
+    ) {
+      this.setState({ borderColorDisplayName: '' });
+    }
     this.setState({ displayName: event.target.value });
   };
 
   emptyDisplayName = () => {
-    let colour = '';
-    const isValid = this.validateCreateRoom();
-    if (!isValid) {
-      colour = '2px solid red';
-    }
-    return this.setState({ borderColorDisplayName: colour });
+    return this.setState({ borderColorDisplayName: '2px solid red' });
   };
 
   emptyJoinName = () => {
