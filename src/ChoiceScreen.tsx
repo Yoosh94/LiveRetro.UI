@@ -76,6 +76,7 @@ class ChoiceScreen extends React.Component<ChoiceRoomProps, ChoiceRoomState> {
           type='text'
           name='displayName'
           onChange={this.handleDisplayNameUpdate}
+          style={{ border: this.state.borderColorDisplayName }}
         />
         <br />
         <button type='button' onClick={this.handleJoinRoom}>
@@ -85,6 +86,7 @@ class ChoiceScreen extends React.Component<ChoiceRoomProps, ChoiceRoomState> {
           type='text'
           name='roomCode'
           onChange={this.handleRoomNameUpdate}
+          style={{ border: this.state.borderColorRoomName }}
         />
         <button onClick={this.handleCreateRoom}>Create Room</button>
       </div>
