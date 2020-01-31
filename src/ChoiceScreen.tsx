@@ -1,5 +1,9 @@
 import React from 'react';
+import Button from 'antd/es/button';
+import { Input } from 'antd';
 import { ChoiceRoomProps, ChoiceRoomState } from './types/choiceRoom';
+import './ChoiceScreen.css';
+
 
 class ChoiceScreen extends React.Component<ChoiceRoomProps, ChoiceRoomState> {
   constructor(props: ChoiceRoomProps) {
@@ -8,29 +12,21 @@ class ChoiceScreen extends React.Component<ChoiceRoomProps, ChoiceRoomState> {
       displayName: '',
       roomName: '',
       borderColorDisplayName: '',
-      borderColorRoomName: ''
+      borderColorRoomName: '',
     };
   }
 
-  public handleRoomNameUpdate = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (
-      this.state.borderColorRoomName === '2px solid red' &&
-      event.target.value.length > 0
-    ) {
+  handleRoomNameUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { borderColorRoomName } = this.state;
+    if (borderColorRoomName === '2px solid red' && event.target.value.length > 0) {
       this.setState({ borderColorRoomName: '' });
     }
     this.setState({ roomName: event.target.value });
   };
 
-  public handleDisplayNameUpdate = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (
-      this.state.borderColorDisplayName === '2px solid red' &&
-      event.target.value.length > 0
-    ) {
+  handleDisplayNameUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { borderColorDisplayName } = this.state;
+    if (borderColorDisplayName === '2px solid red' && event.target.value.length > 0) {
       this.setState({ borderColorDisplayName: '' });
     }
     this.setState({ displayName: event.target.value });
@@ -44,10 +40,12 @@ class ChoiceScreen extends React.Component<ChoiceRoomProps, ChoiceRoomState> {
     return this.setState({ borderColorRoomName: '2px solid red' });
   };
 
-  public handleJoinRoom = (e: React.MouseEvent<HTMLButtonElement>) => {
+  handleJoinRoom = () => {
+    const { handleJoinRoom } = this.props;
+    const { roomName, displayName } = this.state;
     const isValid = this.validateJoinRoom();
     if (isValid) {
-      this.props.handleJoinRoom(this.state.roomName, this.state.displayName);
+      handleJoinRoom(roomName, displayName);
     } else {
       this.emptyJoinName();
       this.emptyDisplayName();
@@ -70,18 +68,10 @@ class ChoiceScreen extends React.Component<ChoiceRoomProps, ChoiceRoomState> {
 
   public render() {
     const selectionComponent = (
-      <div>
-        <label>Display Name:</label>
-        <input
-          type='text'
-          name='displayName'
-          onChange={this.handleDisplayNameUpdate}
-          style={{ border: this.state.borderColorDisplayName }}
-        />
+      <div className="ChoiceScreen">
+        <Input placeholder="Display Name" onChange={this.handleDisplayNameUpdate} style={{ border: this.state.borderColorDisplayName }} />
         <br />
-        <button type='button' onClick={this.handleJoinRoom}>
-          Join Room
-        </button>
+        <Button type="primary" onClick={this.handleJoinRoom}>Join Room</Button>
         <input
           type='text'
           name='roomCode'
@@ -89,7 +79,7 @@ class ChoiceScreen extends React.Component<ChoiceRoomProps, ChoiceRoomState> {
           style={{ border: this.state.borderColorRoomName }}
         />
         <button onClick={this.handleCreateRoom}>Create Room</button>
-      </div>
+      </div >
     );
 
     return <div>{selectionComponent}</div>;
